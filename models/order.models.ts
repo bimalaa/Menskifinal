@@ -10,6 +10,10 @@ export interface IOrderItem {
 
 export interface IOrder extends Document {
   user: Types.ObjectId;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
   orderItems: IOrderItem[];
   shippingAddress: {
     address: string;
@@ -28,6 +32,10 @@ export interface IOrder extends Document {
 const OrderSchema = new Schema<IOrder>(
   {
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    email: { type: String, required: true },
+    phone: { type: String, required: true },
     orderItems: [
       {
         name: { type: String, required: true },

@@ -16,9 +16,38 @@ export default async function OrderDetailsPage({ params }: OrderDetailsPageProps
   const { id } = await params;
   await connectDB();
 
-  const order = await Order.findById(id)
-    .populate("user", "name email")
-    .populate("orderItems.product");
+  const mongoose = require("mongoose");
+  const orderList = await Order.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(id)
+      }
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "user",
+        foreignField: "_id",
+        as: "userInfo"
+      }
+    },
+    {
+      $unwind: {
+        path: "$userInfo",
+        preserveNullAndEmptyArrays: true
+      }
+    },
+    {
+      $lookup: {
+        from: "products",
+        localField: "orderItems.product",
+        foreignField: "_id",
+        as: "productDetails"
+      }
+    }
+  ]);
+
+  const order = orderList[0];
 
   if (!order) {
     notFound();
@@ -48,26 +77,29 @@ export default async function OrderDetailsPage({ params }: OrderDetailsPageProps
               </h3>
             </div>
             <div className="divide-y-2">
-              {order.orderItems.map((item: any, idx: number) => (
-                <div key={idx} className="flex gap-4 p-4 items-center">
-                  <div className="h-16 w-16 relative border flex-shrink-0">
-                    <Image
-                      src={item.product?.images[0]?.url || "/placeholder.jpg"}
-                      alt={item.name}
-                      fill
-                      className="object-cover"
-                    />
+              {order.orderItems.map((item: any, idx: number) => {
+                const product = order.productDetails?.find((p: any) => p._id.toString() === item.product.toString());
+                return (
+                  <div key={idx} className="flex gap-4 p-4 items-center">
+                    <div className="h-16 w-16 relative border flex-shrink-0">
+                      <Image
+                        src={product?.images[0]?.url || "/placeholder.jpg"}
+                        alt={item.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="flex-grow">
+                      <h4 className="font-bold text-sm uppercase tracking-tight">{item.name}</h4>
+                      <p className="text-xs text-muted-foreground uppercase tracking-widest">Qty: {item.quantity}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-bold">${(item.price * item.quantity).toFixed(2)}</p>
+                      <p className="text-[10px] text-muted-foreground">${item.price.toFixed(2)} / each</p>
+                    </div>
                   </div>
-                  <div className="flex-grow">
-                    <h4 className="font-bold text-sm uppercase tracking-tight">{item.name}</h4>
-                    <p className="text-xs text-muted-foreground uppercase tracking-widest">Qty: {item.quantity}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-bold">${(item.price * item.quantity).toFixed(2)}</p>
-                    <p className="text-[10px] text-muted-foreground">${item.price.toFixed(2)} / each</p>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
             <div className="bg-muted/10 p-4 border-t-2 space-y-2">
               <div className="flex justify-between items-center text-sm font-bold uppercase tracking-widest">
@@ -83,9 +115,21 @@ export default async function OrderDetailsPage({ params }: OrderDetailsPageProps
               <h3 className="flex items-center gap-2 font-bold uppercase tracking-widest text-sm border-b pb-4">
                 <UserIcon className="h-4 w-4" /> Customer
               </h3>
-              <div>
-                <p className="font-bold text-lg uppercase tracking-tight">{order.user?.name}</p>
-                <p className="text-sm text-muted-foreground">{order.user?.email}</p>
+              <div className="space-y-4">
+                <div>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-primary/70 block mb-1">Shipping Contact</span>
+                  <p className="font-bold text-lg uppercase tracking-tight">{order.firstName} {order.lastName}</p>
+                  <p className="text-sm text-muted-foreground">{order.email}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{order.phone}</p>
+                </div>
+
+                {order.userInfo && (
+                  <div className="pt-4 border-t border-dashed">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-primary/70 block mb-1">Linked Account</span>
+                    <p className="text-sm font-bold">{order.userInfo.name}</p>
+                    <p className="text-xs text-muted-foreground">{order.userInfo.email}</p>
+                  </div>
+                )}
               </div>
             </div>
 

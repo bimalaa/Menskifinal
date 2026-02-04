@@ -11,9 +11,30 @@ export default async function AdminOrdersPage() {
   // List ALL orders but label them, or filter by COD as requested.
   // The user requested: "also show orders of cash on delivery only"
   // Let's ensure the query works.
-  const orders = await Order.find({
-    paymentMethod: { $regex: /^COD$/i }
-  }).populate("user", "name email").sort({ createdAt: -1 });
+  const orders = await Order.aggregate([
+    {
+      $match: {
+        paymentMethod: { $regex: /^COD$/i }
+      }
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "user",
+        foreignField: "_id",
+        as: "userInfo"
+      }
+    },
+    {
+      $unwind: {
+        path: "$userInfo",
+        preserveNullAndEmptyArrays: true
+      }
+    },
+    {
+      $sort: { createdAt: -1 }
+    }
+  ]);
 
   return (
     <div className="space-y-8">
@@ -39,9 +60,21 @@ export default async function AdminOrdersPage() {
               <TableRow key={order._id}>
                 <TableCell className="font-mono text-xs">{order._id.toString().substring(0, 8)}...</TableCell>
                 <TableCell>
-                  <div className="flex flex-col">
-                    <span className="font-bold text-sm">{order.user?.name}</span>
-                    <span className="text-xs text-muted-foreground">{order.user?.email}</span>
+                  <div className="flex flex-col group">
+                    <span className="font-extrabold text-sm uppercase tracking-tight">{order.firstName} {order.lastName}</span>
+                    <span className="text-xs font-medium text-muted-foreground">{order.email}</span>
+                    <span className="text-[10px] text-muted-foreground/60">{order.phone}</span>
+
+                    {order.userInfo && (
+                      <div className="mt-2 pt-2 border-t border-dashed border-primary/20">
+                        <div className="flex items-center gap-1.5">
+                          <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                          <span className="text-[9px] font-black uppercase tracking-[0.2em] text-primary/80">Linked Account</span>
+                        </div>
+                        <p className="text-[10px] font-bold mt-0.5">{order.userInfo.name}</p>
+                        <p className="text-[9px] opacity-60 lowercase">{order.userInfo.email}</p>
+                      </div>
+                    )}
                   </div>
                 </TableCell>
                 <TableCell className="font-bold">${order.totalPrice.toFixed(2)}</TableCell>

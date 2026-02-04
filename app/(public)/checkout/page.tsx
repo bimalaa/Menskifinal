@@ -49,7 +49,10 @@ export default function CheckoutPage() {
       },
       paymentMethod: "COD",
       totalPrice: total,
-      user: "64f0a9b2b5a2b1c3d4e5f6a1" // Placeholder: In real app, get from auth session
+      firstName: formData.get("firstName"),
+      lastName: formData.get("lastName"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
     };
 
     try {
@@ -98,6 +101,17 @@ export default function CheckoutPage() {
                 <div className="space-y-2">
                   <Label className="text-[10px] font-bold uppercase tracking-widest opacity-70">Last Name</Label>
                   <Input name="lastName" required className="rounded-none border-2 bg-background" />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-[10px] font-bold uppercase tracking-widest opacity-70">Email Address</Label>
+                  <Input name="email" type="email" required className="rounded-none border-2 bg-background" />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-[10px] font-bold uppercase tracking-widest opacity-70">Phone Number</Label>
+                  <Input name="phone" type="tel" required className="rounded-none border-2 bg-background" />
                 </div>
               </div>
 

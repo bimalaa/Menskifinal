@@ -64,6 +64,7 @@ export default async function ProfilePage() {
                             <TableHeader>
                                 <TableRow className="uppercase tracking-widest text-[10px] font-bold">
                                     <TableHead>Order ID</TableHead>
+                                    <TableHead>Customer Info</TableHead>
                                     <TableHead>Date</TableHead>
                                     <TableHead>Total</TableHead>
                                     <TableHead>Payment</TableHead>
@@ -82,7 +83,25 @@ export default async function ProfilePage() {
                                     orders.map((order: any) => (
                                         <TableRow key={order._id} className="hover:bg-muted/30">
                                             <TableCell className="font-medium">#{order._id.toString().slice(-6)}</TableCell>
-                                            <TableCell>{format(new Date(order.createdAt), "MMM d, yyyy")}</TableCell>
+                                            <TableCell>
+                                                <div className="flex flex-col gap-1">
+                                                    <div>
+                                                        <span className="text-[10px] font-black uppercase tracking-widest text-primary/70 block mb-0.5">Ship To</span>
+                                                        <span className="text-xs font-bold uppercase tracking-tight">{order.firstName} {order.lastName}</span>
+                                                    </div>
+                                                    <div className="text-[10px] text-muted-foreground flex flex-col opacity-80">
+                                                        <span>{order.email}</span>
+                                                        <span>{order.phone}</span>
+                                                    </div>
+                                                    {order.userInfo && order.userInfo.name !== `${order.firstName} ${order.lastName}` && (
+                                                        <div className="mt-1 pt-1 border-t border-dotted">
+                                                            <span className="text-[8px] uppercase opacity-50 block">Ordered By</span>
+                                                            <span className="text-[10px] font-medium">{order.userInfo.name}</span>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="text-xs">{format(new Date(order.createdAt), "MMM d, yyyy")}</TableCell>
                                             <TableCell>${order.totalPrice.toFixed(2)}</TableCell>
                                             <TableCell>
                                                 <Badge variant="outline" className="rounded-none uppercase text-[10px] tracking-widest font-bold">
