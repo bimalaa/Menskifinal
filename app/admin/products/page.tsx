@@ -3,7 +3,7 @@ import Category from "@/models/category.models"; // Registration
 import Brand from "@/models/brand.models"; // Registration
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Edit, Plus, Trash2 } from "lucide-react";
+import { Plus } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import ProductActions from "@/components/admin/ProductActions";
@@ -61,14 +61,7 @@ export default async function AdminProductsPage() {
                   </span>
                 </TableCell>
                 <TableCell className="text-right">
-                  <div className="flex justify-end gap-2">
-                    <Button variant="ghost" size="icon">
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button variant="ghost" size="icon" className="text-destructive">
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
+                  <ProductActions productId={product._id} />
                 </TableCell>
               </TableRow>
             ))}

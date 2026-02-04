@@ -37,3 +37,10 @@ export async function updateOrderStatus(id: string, isDelivered: boolean) {
   revalidatePath(`/admin/orders/${id}`);
   return JSON.parse(JSON.stringify(order));
 }
+
+export async function getOrdersByUser(userId: string) {
+  await connectDB();
+  const orders = await Order.find({ user: userId }).sort({ createdAt: -1 });
+  console.log(orders);
+  return JSON.parse(JSON.stringify(orders));
+}

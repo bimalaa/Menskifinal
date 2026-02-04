@@ -2,16 +2,16 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, User, LogOut, Menu } from "lucide-react";
+import { ShoppingCart, User, LogOut, Menu, LogIn } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { logout } from "@/actions/auth.actions";
 import { useState } from "react";
 
-export default function Navbar() {
+export default function Navbar({ user }: { user?: any }) {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const isAdmin = pathname.startsWith("/admin");
+  const isAdmin = user?.role === "admin"; // Derived from user prop if needed, or keeping simple check
 
   return (
     <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
@@ -39,16 +39,26 @@ export default function Navbar() {
               <ShoppingCart className="h-5 w-5" />
             </Button>
           </Link>
-          <Link href="/login">
-            <Button variant="ghost" size="icon">
-              <User className="h-5 w-5" />
-            </Button>
-          </Link>
-          {isAdmin && (
+          {user && (
+            <Link href="/profile">
+              <Button variant="ghost" size="icon">
+                <User className="h-5 w-5" />
+              </Button>
+            </Link>
+          )}
+
+          {user ? (
             <Button variant="ghost" size="icon" onClick={() => logout()}>
               <LogOut className="h-5 w-5" />
             </Button>
+          ) : (
+            <Link href="/login">
+              <Button variant="ghost" size="icon">
+                <LogIn className="h-5 w-5" />
+              </Button>
+            </Link>
           )}
+
           <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
             <Menu className="h-5 w-5" />
           </Button>
