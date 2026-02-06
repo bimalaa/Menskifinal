@@ -88,7 +88,7 @@ export default async function ProductDetailsPage({ params }: ProductDetailsPageP
       {recommendations.length > 0 && (
         <section className="pt-20 border-t">
           <div className="flex justify-between items-end mb-12">
-            <h2 className="text-3xl font-bold uppercase tracking-tighter">Engineered Pairings</h2>
+            <h2 className="text-3xl font-bold uppercase tracking-tighter">Products you may like</h2>
             <p className="text-muted-foreground hidden md:block">Complement your daily regimen.</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">

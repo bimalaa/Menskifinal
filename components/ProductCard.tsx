@@ -47,6 +47,9 @@ export default function ProductCard({ product }: ProductCardProps) {
           <p className="text-[10px] uppercase font-bold tracking-[0.2em] text-muted-foreground mb-1">
             {product.brand?.name}
           </p>
+          <p className="text-[10px] uppercase font-bold tracking-[0.2em] text-muted-foreground mb-1">
+            {product.category?.name}
+          </p>
           <h3 className="font-bold text-sm uppercase tracking-tight line-clamp-1">{product.name}</h3>
           <p className="mt-1 font-bold text-primary">${product.price.toFixed(2)}</p>
         </CardContent>
