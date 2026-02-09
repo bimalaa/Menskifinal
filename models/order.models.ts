@@ -27,6 +27,15 @@ export interface IOrder extends Document {
   paidAt?: Date;
   isDelivered: boolean;
   deliveredAt?: Date;
+  paymentResult?: any;
+  paymentDetails?: {
+    transactionId: string;
+    pid: string;
+    amount: number;
+    status: string;
+    signature: string;
+    esewaRefId?: string;
+  };
 }
 
 const OrderSchema = new Schema<IOrder>(
@@ -57,6 +66,15 @@ const OrderSchema = new Schema<IOrder>(
     paidAt: { type: Date },
     isDelivered: { type: Boolean, required: true, default: false },
     deliveredAt: { type: Date },
+    paymentResult: { type: Schema.Types.Mixed },
+    paymentDetails: {
+      transactionId: { type: String },
+      pid: { type: String },
+      amount: { type: Number },
+      status: { type: String, default: "Pending" },
+      signature: { type: String },
+      esewaRefId: { type: String },
+    },
   },
   { timestamps: true }
 );

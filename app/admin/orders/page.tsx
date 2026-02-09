@@ -11,12 +11,41 @@ export default async function AdminOrdersPage() {
   // List ALL orders but label them, or filter by COD as requested.
   // The user requested: "also show orders of cash on delivery only"
   // Let's ensure the query works.
+
+  // export async function getOrdersByUser(userId: string) {
+  //   await connectDB();
+  //   const mongoose = require("mongoose");
+
+  //   const orders = await Order.aggregate([
+  //     {
+  //       $match: {
+  //         user: new mongoose.Types.ObjectId(userId)
+  //       }
+  //     },
+  //     {
+  //       $lookup: {
+  //         from: "users",
+  //         localField: "user",
+  //         foreignField: "_id",
+  //         as: "userInfo"
+  //       }
+  //     },
+  //     {
+  //       $unwind: {
+  //         path: "$userInfo",
+  //         preserveNullAndEmptyArrays: true
+  //       }
+  //     },
+  //     {
+  //       $sort: { createdAt: -1 }
+  //     }
+  //   ]);
+
+  //   return JSON.parse(JSON.stringify(orders));
+  // }
+
+
   const orders = await Order.aggregate([
-    {
-      $match: {
-        paymentMethod: { $regex: /^COD$/i }
-      }
-    },
     {
       $lookup: {
         from: "users",
@@ -77,7 +106,7 @@ export default async function AdminOrdersPage() {
                     )}
                   </div>
                 </TableCell>
-                <TableCell className="font-bold">${order.totalPrice.toFixed(2)}</TableCell>
+                <TableCell className="font-bold">Rs . {order.totalPrice.toFixed(2)}</TableCell>
                 <TableCell>
                   <Badge variant={order.isPaid ? "default" : "secondary"} className="rounded-none uppercase text-[10px]">
                     {order.isPaid ? "Paid" : "Pending"}

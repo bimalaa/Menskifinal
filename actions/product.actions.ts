@@ -90,7 +90,21 @@ export async function getRecommendedProducts(productId: string) {
 
   const recommended = await Product.find({
     _id: { $ne: productId },
-    $or: [{ category: product.category }, { brand: product.brand }],
+    $or: [{ category: product.category }],
+  })
+    .limit(4)
+    .populate("category brand");
+
+  return JSON.parse(JSON.stringify(recommended));
+}
+export async function getRecommendedProductsByBrands(productId: string) {
+  await connectDB();
+  const product = await Product.findById(productId);
+  if (!product) return [];
+
+  const recommended = await Product.find({
+    _id: { $ne: productId },
+    $or: [{ brand: product.brand }],
   })
     .limit(4)
     .populate("category brand");

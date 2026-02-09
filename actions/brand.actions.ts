@@ -9,9 +9,8 @@ export async function createBrand(formData: FormData) {
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
   const logoUrl = formData.get("logoUrl") as string;
-  const logoPublicId = formData.get("logoPublicId") as string;
 
-  await Brand.create({ name, description, logoUrl, logoPublicId });
+  await Brand.create({ name, description, logoUrl });
   revalidatePath("/admin/brands");
   return { success: true };
 }
@@ -21,9 +20,8 @@ export async function updateBrand(id: string, formData: FormData) {
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
   const logoUrl = formData.get("logoUrl") as string;
-  const logoPublicId = formData.get("logoPublicId") as string;
 
-  await Brand.findByIdAndUpdate(id, { name, description, logoUrl, logoPublicId });
+  await Brand.findByIdAndUpdate(id, { name, description, logoUrl });
   revalidatePath("/admin/brands");
   return { success: true };
 }

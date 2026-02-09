@@ -54,7 +54,7 @@ export default async function AdminProductsPage() {
                 <TableCell className="font-medium">{product.name}</TableCell>
                 <TableCell className="uppercase text-[10px] font-bold tracking-widest">{product.brand?.name}</TableCell>
                 <TableCell className="uppercase text-[10px] font-bold tracking-widest">{product.category?.name}</TableCell>
-                <TableCell>${product.price.toFixed(2)}</TableCell>
+                <TableCell>{product.price.toFixed(2)}</TableCell>
                 <TableCell>
                   <span className={product.stock < 10 ? "text-destructive font-bold" : ""}>
                     {product.stock}

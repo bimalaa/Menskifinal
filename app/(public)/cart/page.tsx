@@ -57,7 +57,7 @@ export default function CartPage() {
                       <p className="text-[10px] uppercase font-bold tracking-widest text-primary">{item.brand?.name}</p>
                       <h3 className="font-bold text-lg uppercase tracking-tight">{item.name}</h3>
                     </div>
-                    <p className="font-bold text-lg">${(item.price * item.quantity).toFixed(2)}</p>
+                    <p className="font-bold text-lg">{(item.price * item.quantity).toFixed(2)}</p>
                   </div>
                   <div className="flex justify-between items-center mt-4">
                     <div className="flex items-center border-2 px-2">
@@ -92,16 +92,16 @@ export default function CartPage() {
           <div className="space-y-4 text-sm font-medium uppercase tracking-widest">
             <div className="flex justify-between">
               <span className="text-muted-foreground">Subtotal</span>
-              <span>${subtotal.toFixed(2)}</span>
+              <span>{subtotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Shipping</span>
-              <span>{subtotal > 50 ? "FREE" : "$10.00"}</span>
+              <span>{subtotal > 50 ? "FREE" : "1000"}</span>
             </div>
           </div>
           <div className="flex justify-between text-xl font-bold uppercase tracking-tight border-t pt-4">
             <span>Total</span>
-            <span>${(subtotal > 50 ? subtotal : subtotal + 10).toFixed(2)}</span>
+            <span>{(subtotal > 50 ? subtotal : subtotal + 10).toFixed(2)}</span>
           </div>
           <Link href="/checkout" className="block w-full">
             <Button className="w-full rounded-none py-8 uppercase tracking-[0.2em] font-bold text-lg" disabled={cartItems.length === 0}>

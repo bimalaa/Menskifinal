@@ -1,4 +1,4 @@
-import { getProductById, getRecommendedProducts } from "@/actions/product.actions";
+import { getProductById, getRecommendedProducts, getRecommendedProductsByBrands } from "@/actions/product.actions";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import ProductCard from "@/components/ProductCard";
@@ -19,6 +19,8 @@ export default async function ProductDetailsPage({ params }: ProductDetailsPageP
   }
 
   const recommendations = await getRecommendedProducts(id);
+
+  const recommendationByBrand = await getRecommendedProductsByBrands(id);
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -48,7 +50,7 @@ export default async function ProductDetailsPage({ params }: ProductDetailsPageP
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-primary">{product.brand?.name}</p>
             <h1 className="text-4xl md:text-5xl font-bold uppercase tracking-tighter leading-tight">{product.name}</h1>
             <div className="flex items-center gap-4 py-2">
-              <p className="text-3xl font-bold">${product.price.toFixed(2)}</p>
+              <p className="text-3xl font-bold">{product.price.toFixed(2)}</p>
               <Badge variant={product.stock > 0 ? "secondary" : "destructive"} className="rounded-none uppercase tracking-widest px-3">
                 {product.stock > 0 ? `In Stock (${product.stock})` : "Out of Stock"}
               </Badge>
@@ -89,10 +91,25 @@ export default async function ProductDetailsPage({ params }: ProductDetailsPageP
         <section className="pt-20 border-t">
           <div className="flex justify-between items-end mb-12">
             <h2 className="text-3xl font-bold uppercase tracking-tighter">Products you may like</h2>
-            <p className="text-muted-foreground hidden md:block">Complement your daily regimen.</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {recommendations.map((rec: any) => (
+              <ProductCard key={rec._id} product={rec} />
+            ))}
+          </div>
+        </section>
+      )}
+
+
+
+      {/* Recommendations by brnad */}
+      {recommendationByBrand?.length > 0 && (
+        <section className="pt-20 border-t">
+          <div className="flex justify-between items-end mb-12">
+            <h2 className="text-3xl font-bold uppercase tracking-tighter">More products from the brand</h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {recommendationByBrand?.map((rec: any) => (
               <ProductCard key={rec._id} product={rec} />
             ))}
           </div>

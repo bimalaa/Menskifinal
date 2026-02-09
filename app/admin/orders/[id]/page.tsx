@@ -94,8 +94,8 @@ export default async function OrderDetailsPage({ params }: OrderDetailsPageProps
                       <p className="text-xs text-muted-foreground uppercase tracking-widest">Qty: {item.quantity}</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold">${(item.price * item.quantity).toFixed(2)}</p>
-                      <p className="text-[10px] text-muted-foreground">${item.price.toFixed(2)} / each</p>
+                      <p className="font-bold">Rs. {(item.price * item.quantity).toFixed(2)}</p>
+                      <p className="text-[10px] text-muted-foreground">Rs. {item.price.toFixed(2)} / each</p>
                     </div>
                   </div>
                 );
@@ -104,7 +104,7 @@ export default async function OrderDetailsPage({ params }: OrderDetailsPageProps
             <div className="bg-muted/10 p-4 border-t-2 space-y-2">
               <div className="flex justify-between items-center text-sm font-bold uppercase tracking-widest">
                 <span>Total Amount</span>
-                <span className="text-lg">${order.totalPrice.toFixed(2)}</span>
+                <span className="text-lg">Rs. {order.totalPrice.toFixed(2)}</span>
               </div>
             </div>
           </div>
@@ -165,6 +165,36 @@ export default async function OrderDetailsPage({ params }: OrderDetailsPageProps
                   {order.isPaid ? "Paid" : "Unpaid"}
                 </Badge>
               </div>
+
+              {order.paymentResult && order.paymentMethod === "eSewa" && (
+                <div className="space-y-2 bg-muted/20 p-4 border text-xs overflow-hidden">
+                  <span className="uppercase font-bold tracking-widest opacity-70 block mb-2">eSewa Verification Details</span>
+                  <div className="grid grid-cols-2 gap-1">
+                    <span className="font-bold">Ref ID:</span>
+                    <span className="truncate" title={order.paymentResult.transaction_code}>{order.paymentResult.transaction_code}</span>
+                    <span className="font-bold">Trans UUID:</span>
+                    <span className="truncate" title={order.paymentResult.transaction_uuid}>{order.paymentResult.transaction_uuid}</span>
+                    <span className="font-bold">Amt:</span>
+                    <span>Rs. {order.paymentResult.total_amount}</span>
+                  </div>
+                </div>
+              )}
+
+              {order.paymentDetails && (
+                <div className="space-y-2 bg-muted/20 p-4 border text-xs overflow-hidden pt-4 border-t-2 border-dashed">
+                  <span className="uppercase font-bold tracking-widest opacity-70 block mb-2">Payment Init Details</span>
+                  <div className="grid grid-cols-2 gap-1">
+                    <span className="font-bold">Status:</span>
+                    <span>{order.paymentDetails.status}</span>
+                    <span className="font-bold">PID:</span>
+                    <span className="truncate" title={order.paymentDetails.pid}>{order.paymentDetails.pid}</span>
+                    <span className="font-bold">UUID:</span>
+                    <span className="truncate" title={order.paymentDetails.transactionId}>{order.paymentDetails.transactionId}</span>
+                    <span className="font-bold">Amt:</span>
+                    <span>Rs. {order.paymentDetails.amount}</span>
+                  </div>
+                </div>
+              )}
 
               <div className="space-y-4 pt-4">
                 <div className="flex items-center gap-3">

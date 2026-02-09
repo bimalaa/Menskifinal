@@ -102,7 +102,7 @@ export default async function ProfilePage() {
                                                 </div>
                                             </TableCell>
                                             <TableCell className="text-xs">{format(new Date(order.createdAt), "MMM d, yyyy")}</TableCell>
-                                            <TableCell>${order.totalPrice.toFixed(2)}</TableCell>
+                                            <TableCell>{(order.totalPrice).toFixed(2)}</TableCell>
                                             <TableCell>
                                                 <Badge variant="outline" className="rounded-none uppercase text-[10px] tracking-widest font-bold">
                                                     {order.paymentMethod}
