@@ -76,6 +76,7 @@ export default function ProductForm({ initialData, categories, brands }: Product
             stock: parseInt(formData.get("stock") as string),
             category: formData.get("category"),
             brand: formData.get("brand"),
+            type: formData.get("type"),
             images: images,
         };
 
@@ -123,7 +124,7 @@ export default function ProductForm({ initialData, categories, brands }: Product
 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <Label className="uppercase tracking-widest text-[10px] font-bold">Price ($)</Label>
+                            <Label className="uppercase tracking-widest text-[10px] font-bold">Price (Rs. )</Label>
                             <Input
                                 name="price"
                                 defaultValue={initialData?.price}
@@ -143,6 +144,15 @@ export default function ProductForm({ initialData, categories, brands }: Product
                                 className="rounded-none bg-background border-2"
                             />
                         </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label className="uppercase tracking-widest text-[10px] font-bold">Product Type (e.g. facewash, moisturizer)</Label>
+                        <Input
+                            name="type"
+                            defaultValue={initialData?.type}
+                            className="rounded-none bg-background border-2"
+                        />
                     </div>
                 </div>
 

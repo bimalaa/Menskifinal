@@ -31,11 +31,11 @@ export default async function Home() {
                 Shop the Collection
               </Button>
             </Link>
-            <Link href="/about">
+            {/* <Link href="/about">
               <Button size="lg" variant="outline" className="rounded-none px-12 uppercase tracking-widest text-xs font-bold">
                 Our Story
               </Button>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </section>
@@ -66,8 +66,8 @@ export default async function Home() {
       <section className="container mx-auto px-4">
         <div className="flex justify-between items-end mb-12">
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold uppercase tracking-tighter">Essential Rituals</h2>
-            <p className="text-muted-foreground">The foundation of a better regimen.</p>
+            <h2 className="text-3xl font-bold uppercase tracking-tighter">Featured Products</h2>
+            <p className="text-muted-foreground">Shop our featured Products.</p>
           </div>
           <Link href="/shop" className="text-sm font-bold uppercase tracking-widest flex items-center gap-2 hover:text-primary transition-colors">
             View All <ArrowRight className="h-4 w-4" />

@@ -18,7 +18,19 @@ export default async function ProductDetailsPage({ params }: ProductDetailsPageP
     notFound();
   }
 
-  const recommendations = await getRecommendedProducts(id);
+  // Fetch content-based recommendations from API
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  let recommendations = [];
+  try {
+    const res = await fetch(`${baseUrl}/api/recommendations/${id}`, { cache: 'no-store' });
+    if (res.ok) {
+        recommendations = await res.json();
+    }
+  } catch (error) {
+    console.error("Failed to fetch recommendations:", error);
+    // Fallback to existing logic if API fails
+    recommendations = await getRecommendedProducts(id);
+  }
 
   const recommendationByBrand = await getRecommendedProductsByBrands(id);
 
@@ -50,7 +62,7 @@ export default async function ProductDetailsPage({ params }: ProductDetailsPageP
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-primary">{product.brand?.name}</p>
             <h1 className="text-4xl md:text-5xl font-bold uppercase tracking-tighter leading-tight">{product.name}</h1>
             <div className="flex items-center gap-4 py-2">
-              <p className="text-3xl font-bold">{product.price.toFixed(2)}</p>
+              <p className="text-3xl font-bold">Rs. {product.price.toFixed(2)}</p>
               <Badge variant={product.stock > 0 ? "secondary" : "destructive"} className="rounded-none uppercase tracking-widest px-3">
                 {product.stock > 0 ? `In Stock (${product.stock})` : "Out of Stock"}
               </Badge>
@@ -90,9 +102,9 @@ export default async function ProductDetailsPage({ params }: ProductDetailsPageP
       {recommendations.length > 0 && (
         <section className="pt-20 border-t">
           <div className="flex justify-between items-end mb-12">
-            <h2 className="text-3xl font-bold uppercase tracking-tighter">Products you may like</h2>
+            <h2 className="text-3xl font-bold uppercase tracking-tighter">Recommended for you</h2>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {recommendations.map((rec: any) => (
               <ProductCard key={rec._id} product={rec} />
             ))}

@@ -68,8 +68,8 @@ export default async function AdminOrdersPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-4xl font-bold uppercase tracking-tighter">COD Orders</h1>
-        <p className="text-muted-foreground uppercase tracking-widest text-sm font-medium">Manage Cash on Delivery Transactions</p>
+        <h1 className="text-4xl font-bold uppercase tracking-tighter">Orders</h1>
+        <p className="text-muted-foreground uppercase tracking-widest text-sm font-medium">Manage Delivery Transactions</p>
       </div>
 
       <div className="bg-background border-2 rounded-none">

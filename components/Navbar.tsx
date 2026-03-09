@@ -30,6 +30,9 @@ export default function Navbar({ user }: { user?: any }) {
             <Link href="/shop?category=beard-care" className="text-sm font-medium hover:text-primary transition-colors">
               Beard Care
             </Link>
+            <Link href="/shop?category=body-care" className="text-sm font-medium hover:text-primary transition-colors">
+              Body Care
+            </Link>
           </div>
         </div>
 
@@ -71,6 +74,7 @@ export default function Navbar({ user }: { user?: any }) {
           <Link href="/shop" className="text-sm font-medium" onClick={() => setIsMenuOpen(false)}>Shop All</Link>
           <Link href="/shop?category=face-care" className="text-sm font-medium" onClick={() => setIsMenuOpen(false)}>Face Care</Link>
           <Link href="/shop?category=beard-care" className="text-sm font-medium" onClick={() => setIsMenuOpen(false)}>Beard Care</Link>
+          <Link href="/shop?category=body-care" className="text-sm font-medium" onClick={() => setIsMenuOpen(false)}>Body Care</Link>
         </div>
       )}
     </nav>

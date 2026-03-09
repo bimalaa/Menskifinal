@@ -118,5 +118,28 @@ export async function uploadImage(file: string, folder: string) {
 ### 6.2 Authentication Middleware
 Middleware intercepts requests to protected routes (like `/admin`), verifying the JWT token to ensure only authorized users can access sensitive areas.
 
-## 7. Conclusion
+  if (!product) return [];
+
+  const recommended = await Product.find({
+    _id: { $ne: productId },
+    $or: [{ brand: product.brand }],
+  })
+    .limit(4)
+    .populate("category brand");
+
+  return JSON.parse(JSON.stringify(recommended));
+}
+
+
+
+### 7.4 Admin & Analytics Module
+*   **Data Aggregation Pipelines**:
+    *   Used for generating the admin dashboard statistics (Revenue, Sales Charts).
+    *   **Pipeline Stages**:
+        1.  `$match`: Filter orders to include only those where `isPaid` is true.
+        2.  `$group`: Aggregate data based on criteria (e.g., group by month for sales charts, sum `totalPrice` for total revenue).
+        3.  `$sort`: Order the results (e.g., by date) to ensure the chart data is chronological.
+        4.  `$project`: Reshape the output to a frontend-friendly format.
+
+## 8. Conclusion
 The **Menski** project successfully demonstrates functioning e-commerce capabilities. By integrating modern tools like Next.js and Cloudinary, it achieves high performance and a professional user experience. The secure payment integration with eSewa makes it a practical solution for the local market.

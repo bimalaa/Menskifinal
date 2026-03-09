@@ -8,6 +8,7 @@ export interface IProduct extends Document {
   category: Types.ObjectId;
   stock: number;
   images: { url: string; public_id: string }[];
+  type: string;
   rating: number;
   numReviews: number;
 }
@@ -26,6 +27,7 @@ const ProductSchema = new Schema<IProduct>(
         public_id: { type: String, required: true },
       },
     ],
+    type: { type: String, required: false },
     rating: { type: Number, default: 0 },
     numReviews: { type: Number, default: 0 },
   },
